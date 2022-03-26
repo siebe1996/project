@@ -45,6 +45,7 @@ docker-compose exec -u 1000:1000 php-web bash
 $ cp .env.example .env
 $ composer install
 $ php artisan key:generate
+$ touch storage/logs/laravel.log
 $ chmod 777 -R storage
 $ php artisan storage:link
 $ exit
