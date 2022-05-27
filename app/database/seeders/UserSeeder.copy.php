@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Faker\Factory as FakerFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -20,44 +19,39 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'first_name' => 'Bart',
             'last_name' => 'Delrue',
-            'email' => 'bartdelrue@odisee.be',
-            'password' => Hash::make('Azerty123'),
-            'total_kills' => 0,
-            'deaths' => 1,
-            'games_played' => 1,
+            'kills' => 0,
+            'alive' => true,
+            'weapon_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         DB::table('users')->insert([
             'first_name' => 'Joris',
             'last_name' => 'Maervoet',
-            'email' =>'jorismaervoet@odisee.be',
-            'password' => Hash::make('Azerty123'),
-            'total_kills' => 0,
-            'deaths' => 1,
-            'games_played' => 1,
+            'kills' => 0,
+            'alive' => true,
+            'weapon_id' => 2,
+            'target_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         DB::table('users')->insert([
             'first_name' => 'Pieter',
             'last_name' => 'Van Peteghem',
-            'email' => 'pietervanpeteghem@odisee.be',
-            'password' => Hash::make('Azerty123'),
-            'total_kills' => 0,
-            'deaths' => 1,
-            'games_played' => 1,
+            'kills' => 0,
+            'alive' => true,
+            'weapon_id' => 2,
+            'target_id' => 2,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         DB::table('users')->insert([
             'first_name' => 'Davy',
             'last_name' => 'De Winne',
-            'email' => 'davydewinne@odisee.be',
-            'password' => Hash::make('Azerty123'),
-            'total_kills' => 0,
-            'deaths' => 1,
-            'games_played' => 1,
+            'kills' => 0,
+            'alive' => true,
+            'weapon_id' => 1,
+            'target_id' => 3,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
@@ -74,69 +68,27 @@ class UserSeeder extends Seeder
         $faker = FakerFactory::create();
         $faker->seed(222);
         for ($i = 4; $i < 10; $i++) {
-            $firstName = $faker->firstName;
-            $lastName = $faker->lastName;
-            $email = strtolower(str_replace(' ', '', $firstName) . str_replace(' ', '', $lastName)) . '@odisee.be';
             DB::table('users')->insert([
-                'first_name' => $firstName,
-                'last_name' => $lastName,
-                'email' => $email,
-                'password' => Hash::make('Azerty123'),
-                'total_kills' => 0,
-                'deaths' => 1,
-                'games_played' => 1,
+                'first_name' => $faker->firstName,
+                'last_name' => $faker->lastName,
+                'kills' => 0, //$faker->numberBetween(1, 5),
+                'alive' => true, //$faker->boolean
+                'weapon_id' => $faker->numberBetween(1, 10),
+                'target_id' => $i,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
 
-        //$firstUser = DB::table('users')->where('id', 1);
-        //$firstUser->update(['target_id' => 10]);
+        $firstUser = DB::table('users')->where('id', 1);
+        $firstUser->update(['target_id' => 10]);
 
         $userIds = DB::table('users')->pluck('id')->all();
-        for ($i = 1; $i <= count($userIds); $i++){
-            if ($i == count($userIds)){
-                $targetId = $userIds[0];
-                }
-            else{
-                $targetId = $userIds[$i];
-            }
+        for ($i = 0; $i < count($userIds); $i++){
             DB::table('game_user')->insert([
-                'game_id' => 1 ,
-                'user_id' => $userIds[$i-1],
-                'kills' => 0,
-                'alive' => true,
-                'target_id' => $targetId
+                ['game_id' => 1 , 'user_id' => $userIds[$i]],
             ]);
         }
-
-        DB::table('users')->insert([
-            'first_name' => 'Dries',
-            'last_name' => 'Loco',
-            'email' => 'driesloco@odisee.be',
-            'password' => Hash::make('Azerty123'),
-            'total_kills' => 0,
-            'deaths' => 1,
-            'games_played' => 1,
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-        ]);
-
-        //$lastUserId = DB::table('users')->pluck('id')->last();
-        DB::table('game_user')->insert([
-            'game_id' => 2 ,
-            'user_id' => 11,
-            'kills' => 0,
-            'alive' => true,
-            'target_id' => null
-        ]);
-        DB::table('game_user')->insert([
-            'game_id' => 3 ,
-            'user_id' => 1,
-            'kills' => 0,
-            'alive' => true,
-            'target_id' => null
-        ]);
         /*$userIds = DB::table('users')->pluck('id')->all();
         for ($i = 0; $i < count($userIds); $i++){
             if ($i < (count($userIds) - 1)){

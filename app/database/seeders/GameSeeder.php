@@ -17,12 +17,42 @@ class GameSeeder extends Seeder
     public function run()
     {
         DB::table('games')->insert([
+            'title' => 'ict',
             'active' => true,
+            'start_date' => Carbon::now(),
+            'weapon_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         DB::table('games')->insert([
+            'title' => 'elo',
             'active' => false,
+            'start_date' => Carbon::now(),
+            'weapon_id' => 2,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        DB::table('games')->insert([
+            'title' => 'chemie',
+            'active' => false,
+            'start_date' => Carbon::now(),
+            'weapon_id' => 2,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        DB::table('games')->insert([
+            'title' => 'LTT',
+            'active' => false,
+            'start_date' => Carbon::now(),
+            'weapon_id' => 2,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+        DB::table('games')->insert([
+            'title' => 'youtube',
+            'active' => false,
+            'start_date' => Carbon::now(),
+            'weapon_id' => 2,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);

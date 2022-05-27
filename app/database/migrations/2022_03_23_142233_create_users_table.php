@@ -17,13 +17,13 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->unsignedBigInteger('hits');
-            $table->boolean('alive');
-            $table->foreignId('game_id')->constrained();
-            $table->foreignId('weapon_id')->constrained();
-            $table->unsignedBigInteger('target_id')->nullable(true);
-            $table->foreign('target_id')->references('id')->on('users');
-            $table->unique('target_id');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->unsignedBigInteger('total_kills')->default(0);
+            $table->unsignedBigInteger('deaths')->default(0);
+            $table->unsignedBigInteger('games_played')->default(0);
             $table->timestamps();
         });
     }
