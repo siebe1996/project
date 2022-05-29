@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Route::middleware('auth:sanctum')->post('userinfo/{id}', [GameUserApiController::class, 'store']);//->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->group(function (){
+/*Route::middleware('auth:sanctum')->group(function (){*/
     Route::apiResource('games', GameApiController::class)->only(['index', 'show', 'update']);
     Route::get('currentgames', [GameApiController::class, 'current']);
     Route::get('target', [GameUserApiController::class, 'target']);
@@ -51,5 +51,5 @@ Route::middleware('auth:sanctum')->group(function (){
         Route::post('{id}/delete', [BlogController::class, 'deleteBlogpost'])->where(['id' => '[0-9]+'])
             ->middleware('auth');*/
     });
-});
+/*});*/
 

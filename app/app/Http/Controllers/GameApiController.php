@@ -44,7 +44,7 @@ class GameApiController extends Controller
         $games = new GameCollection(Game::whereNotIn('id', $activeGamesIdsWithUser)->get());
         $games = $games->merge($activeGamesWithUser);
         */
-
+        /*
         $activeGamesWithUser = Game::where('active', true)
             ->whereHas('users', function ($q) use ($userId){
                 $q->where('users.id', '=', $userId);
@@ -54,23 +54,23 @@ class GameApiController extends Controller
         }
         $activeGamesIdsWithUser = $activeGamesWithUser->pluck('id');
         $games = Game::whereNotIn('id', $activeGamesIdsWithUser)->get();
-        $games = $games->merge($activeGamesWithUser);
+        $games = $games->merge($activeGamesWithUser);*/
 
         ////JOINABLE GAMES CODE/////
-        $notJoinable = Game::where('start_date', '>', Carbon::now())
+        $notJoinable = new GameCollection(Game::where('start_date', '>', Carbon::now())
             ->whereHas('users', function ($q) use ($userId){
                 $q->where('users.id', '=', $userId);
-            })->get();
+            })->get());
 
         $notJoinableIds = $notJoinable->pluck('id');
-        $joinable = Game::where('start_date', '>', Carbon::now())->whereNotIn('id', $notJoinableIds)->get();
+        $joinable = new GameCollection(Game::where('start_date', '>', Carbon::now())->whereNotIn('id', $notJoinableIds)->get());
 
-        $startedGames = Game::where('start_date', '<', Carbon::now())->where('end_date', '>', Carbon::now())->get();
-        $previousGames = Game::where('end_date', '<', Carbon::now())->get();
+        $startedGames = new GameCollection(Game::where('start_date', '<', Carbon::now())->where('end_date', '>', Carbon::now())->get());
+        $previousGames = new GameCollection(Game::where('end_date', '<', Carbon::now())->get());
         ////JOINABLE GAMES CODE/////
 
 
-        return response(['data' => ['active_joinable' => $joinable, 'active_not_joinable' => $notJoinable, 'started_games' => $startedGames, 'previous_games' => $previousGames]], 200)
+        return response(['data' => ['active' => ['active_joinable' => $joinable, 'active_not_joinable' => $notJoinable, 'started_games' => $startedGames], 'previous_games' => $previousGames]], 200)
             ->header('Content-Type', 'application/json');
     }
 

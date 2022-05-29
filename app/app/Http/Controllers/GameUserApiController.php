@@ -155,12 +155,16 @@ class GameUserApiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function target(Request $request){
-        if($request->filled('targetId')){
-            $targetId = $request->targetId;
+        if($request->filled('gameId')){
+            $gameId = $request->gameId;
             $userId = Auth::id();
+            /*$targetId = $request->targetId;
             $targetName = User::where('id', $targetId)->pluck('first_name');
-
+            */
             //$targetId = $gameUser->users_with_pivot;//->players->game_user->target_id;
+            $game = Game::with('users')->findOrFail($gameId)->with('usersWithPivot')->findOrFail($gameId);
+            $targetId = $game->usersWithPivot->where('pivot.user_id', $userId)->pluck('pivot.target_id');
+            $targetName = User::where('id', $targetId)->pluck('first_name')->first();
 
             return response(['data' => $targetName], 200)
                 ->header('Content-Type', 'application/json');

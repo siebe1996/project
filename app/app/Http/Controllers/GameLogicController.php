@@ -35,7 +35,7 @@ class GameLogicController extends Controller
         User::where('id', $killerId)->update(['total_kills' => DB::raw('total_kills + 1')]);
         User::where('id', $userId)->update(['deaths' => DB::raw('deaths + 1')]);
 
-        return response(['data' => ['u got killed' ]], 200)
+        return response(['data' => 'u got killed' ], 200)
             ->header('Content-Type', 'application/json');
     }
 }
