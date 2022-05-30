@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
+use App\Models\Game;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,12 +20,22 @@ class UserApiController extends Controller
      */
     public function index(Request $request)
     {
-        Gate::authorize('show-all-users');
+        /*Gate::authorize('show-all-users');
         $users = User::query();
         $users = $users->paginate(15)->withQueryString();
         $users = new UserCollection($users);
         return response(['data' => $users], 200)
-            ->header('Content-Type', 'application/json');
+            ->header('Content-Type', 'application/json');*/
+        if($request->filled('gameId')){
+            $gameId = $request->gameId;
+            $userId = Auth::id();
+            $game = Game::findOrFail($gameId);
+            $users = $game->users;
+            $users = new UserCollection($users);
+
+            return response(['data' => $users], 200)
+                ->header('Content-Type', 'application/json');
+        }
     }
 
     /**

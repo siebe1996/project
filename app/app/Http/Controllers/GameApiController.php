@@ -102,7 +102,7 @@ class GameApiController extends Controller
         $mostKilled = $game->usersWithPivot->sortByDesc('pivot.kills')->take(5);
 
 
-        return response(['data' =>['game_data' => $game, 'alive_player' => $alivePlayers, 'winner' => $winner, 'mostKilled' => $mostKilled]], 200)
+        return response(['data' =>['game_data' => $game, 'alive_player' => $alivePlayers, 'winner' => $winner, 'most_killed' => $mostKilled]], 200)
             ->header('Content-Type', 'application/json');
     }
 
