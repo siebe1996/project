@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //Route::middleware('auth:sanctum')->post('userinfo/{id}', [GameUserApiController::class, 'store']);//->middleware('auth:sanctum');
-/*Route::middleware('auth:sanctum')->group(function (){*/
+Route::middleware('auth:sanctum')->group(function (){
     Route::apiResource('games', GameApiController::class)->only(['index', 'show', 'update']);
     Route::get('currentgames', [GameApiController::class, 'current']);
     Route::get('target', [GameUserApiController::class, 'target']);
@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::get('usergames/{id}', [GameUserApiController::class, 'getGamesForUser'])->where(['id' => '[0-9]+']);
     Route::apiResource('weapons', WeaponApiController::class)->only(['index', 'show']);
     Route::prefix('gamelogic')->group(function () {
-        Route::patch('{gameId}', [GameLogicController::class, 'gotKilled'])->where(['gameId' => '[0-9]+']);
+        Route::patch('', [GameLogicController::class, 'gotKilledUser']);
         /*Route::get('add', [BlogController::class,'add']);
         Route::get('search', [BlogController::class, 'search']);
 
@@ -51,5 +51,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         Route::post('{id}/delete', [BlogController::class, 'deleteBlogpost'])->where(['id' => '[0-9]+'])
             ->middleware('auth');*/
     });
-/*});*/
+    Route::prefix('admin')->group(function (){
+        Route::prefix('gamelogic')->group(function () {
+            Route::patch('', [GameLogicController::class, 'gotKilledAdmin']);
+        });
+    });
+});
 

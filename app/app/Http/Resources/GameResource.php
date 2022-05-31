@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use function PHPUnit\Framework\isNan;
 
 class GameResource extends JsonResource
 {

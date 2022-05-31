@@ -13,9 +13,29 @@ use Illuminate\Support\Facades\DB;
 
 class GameLogicController extends Controller
 {
-    public function gotKilled($gameId)
+    public function gotKilledUser(Request $request)
     {
-        $userId = Auth::id();
+        if($request->filled('gameId')) {
+            $gameId = $request->gameId;
+            $gebruikers_id = Auth::id();
+            $this->gotKilled($gebruikers_id, $gameId);
+            return response(['data' => 'u got killed'], 200)
+                ->header('Content-Type', 'application/json');
+        }
+    }
+
+    public function gotKilledAdmin(Request $request)
+    {
+        if($request->filled('gameId') && $request->filled('userId') ) {
+            $gameId = $request->gameId;
+            $gebruikers_id = $request->userId;
+            $this->gotKilled($gebruikers_id, $gameId);
+            return response(['data' => 'gebruiker is gekilled'], 200)
+                ->header('Content-Type', 'application/json');
+        }
+    }
+
+    public function gotKilled($userId, $gameId){
         //user die gekilled wordt
         $gameUser = Game::where('id', $gameId)
             ->whereHas('users', function ($q) use ($userId) {
@@ -28,14 +48,11 @@ class GameLogicController extends Controller
         $killer = Game::where('id', $gameId)
             ->with(array('usersWithPivot' => function ($query) use ($userId) {
                 $query->where('target_id', $userId);
-             }))->first();
+            }))->first();
         $gameUser->usersWithPivot->first()->pivot->update(['target_id' => NULL, 'alive' => false, 'when_killed' => Carbon::now()]);
         $killer->usersWithPivot->first()->pivot->update(['kills' => DB::raw('kills + 1'), 'target_id' => $targetIdKilled]);
         $killerId = $killer->usersWithPivot->first()->id;
         User::where('id', $killerId)->update(['total_kills' => DB::raw('total_kills + 1')]);
         User::where('id', $userId)->update(['deaths' => DB::raw('deaths + 1')]);
-
-        return response(['data' => 'u got killed' ], 200)
-            ->header('Content-Type', 'application/json');
     }
 }

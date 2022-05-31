@@ -56,6 +56,10 @@ class User extends Authenticatable
         return $this->roles()->where('title', $role)->exists();
     }
 
+    public function gamesWithPivot(){
+        return $this->belongsToMany(Game::class, 'game_user')->withPivot('game_id', 'user_id', 'kills', 'alive', 'when_killed', 'target_id');
+    }
+
     public function getFullNameAttribute(){
         return $this->first_name . ' ' . $this->last_name;
     }

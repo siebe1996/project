@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\GameCollection;
 use App\Http\Resources\GameResource;
+use App\Http\Resources\UserCollection;
 use App\Models\Game;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -100,6 +101,7 @@ class GameApiController extends Controller
         /*$orderOnKill=$game->usersWithPivot->sortByDesc('pivot.when_killed');
         $mostKilled = array_slice($orderOnKill->usersWithPivot, '0', 5);*/
         $mostKilled = $game->usersWithPivot->sortByDesc('pivot.kills')->take(5);
+        $mostKilled = new UserCollection($mostKilled);
 
 
         return response(['data' =>['game_data' => $game, 'alive_player' => $alivePlayers, 'winner' => $winner, 'most_killed' => $mostKilled]], 200)
