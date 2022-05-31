@@ -6,7 +6,7 @@ Final project web-mobile full-stack
 * [PHP Documentation](https://www.php.net/docs.php)
 * [MySQL 5.7 Reference Manual](https://dev.mysql.com/doc/refman/5.7/en/)
 * [Laravel 8 documentation](https://laravel.com/docs/8.x)
-* [Odisee Hoge school](odisee.be)
+* [Odisee Hoge school](https://odisee.be)
 
 ## How to pull it from git
 
@@ -51,6 +51,7 @@ $ exit
 ```
 
 ## Making api calls
+### this must run on port 8080 to communicate with the frontend that belongs to this project
 ### Open postman or insomnia
 1. GET http://localhost:8080/sanctum/csrf-cookie
 * in response cookie copy XSRF-TOKEN (not %3D)
