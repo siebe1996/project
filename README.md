@@ -67,7 +67,6 @@ $ exit
 * HEADER -> Referer: localhost:8080
 * HEADER -> Cookie: laravel_session=<the copied laravel_sesion>
 #### if u want to run frontend at diffrent port go to .env and edit SANCTUM_STATEFUL_DOMAINS=localhost:3000,127.0.0.1:3000
-#### if u want to run frontend at diffrent port go to .env and edit APP_URL=http://localhost:8080
 
 ## Recipes and troubleshooting
 
