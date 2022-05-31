@@ -1,30 +1,28 @@
-# wmfs-laravel-boilerplate
-Laravel 8 project folder structure for the course Web &amp; Mobile Full-stack, part of the Professional Bachelor ICT study program.
-
+# Backend gotcha project
+Final project web-mobile full-stack
 ## Links
 
 * [Course slides wmfs-laravel](https://intern.ikdoeict.be/apps/leercentrum/courses/wmfs-laravel-course-materials/)
 * [PHP Documentation](https://www.php.net/docs.php)
 * [MySQL 5.7 Reference Manual](https://dev.mysql.com/doc/refman/5.7/en/)
 * [Laravel 8 documentation](https://laravel.com/docs/8.x)
+* [Odisee Hoge school](odisee.be)
 
-## Installing and developing your own project based on this boilerplate
+## How to pull it from git
 
 1. Create a new completely! empty project on gitlab.com/ikdoeict, for example my-project
 2. Execute following commands on your system (pay attention !)
+3. Best installed on ubuntu
 ```shell
 mkdir my-project
 cd my-project
 git init
-git pull https://gitlab.com/ikdoeict/joris.maervoet/wmfs-laravel-boilerplate.git
-git remote add origin https://gitlab.com/ikdoeict/<your-name>/my-project.git
-git push -u origin master
+git pull https://gitlab.com/ikdoeict/siebe.vandevoorde/2122wmfs-backend
 ```
-3. From now on, you can stage, commit and push as usual.
-4. Open the main folder with an IDE (such as PhpStorm or Visual Studio Code)
 
 ## Running and stopping the Docker MCE
 
+* Make sure u have docker installed (best on ubuntu, WSL2)
 * Run the environment, using Docker, from your terminal/cmd
 ```shell
 cd <your-project>
@@ -48,8 +46,25 @@ $ php artisan key:generate
 $ touch storage/logs/laravel.log
 $ chmod 777 -R storage
 $ php artisan storage:link
+$ php artisan migrate:refresh --seed
 $ exit
 ```
+
+## Making api calls
+### Open postman or insomnia
+1. GET http://localhost:8080/sanctum/csrf-cookie
+* in response cookie copy XSRF-TOKEN (not %3D)
+2. POST http://localhost:8080/api/login
+* HEADER -> Contenet-Type : application/json
+* HEADER -> X-XSRF-TOKEN : <"the copied xsrf-token">
+* HEADER -> Accept : application/json
+* in response cookie copy laravel_session (niet %3D)
+3. GET,POST,... all other routes
+* HEADER -> Contenet-Type : application/json
+* HEADER -> X-XSRF-TOKEN : <"the copied xsrf-token">
+* HEADER -> Accept : application/json
+* HEADER -> Referer: localhost:8080
+* HEADER -> Cookie: laravel_session=<the copied laravel_sesion>
 
 
 ## Recipes and troubleshooting
